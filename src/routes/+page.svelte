@@ -2,10 +2,14 @@
 
 <script>
     import { spring } from 'svelte/motion';
+    import MdDelete from 'svelte-icons/md/MdDelete.svelte'
+
     let lines = [];
     let drawing = false;
     let startPoint = {};
     let rect;
+
+    let name = "";
 
     let completed = false;
 
@@ -46,7 +50,8 @@
             endSizes.set({L: 2, R: 1})
             endPoint.x = 0;
             endPoint.y = 200;
-            if(!drawing) startPoint = endPoint;
+            // if(!drawing) startPoint = endPoint;
+            startPoint = endPoint;
         } else if (Math.abs(endPoint.x - 600) < 20 && Math.abs(endPoint.y - 200) < 20) {
             endSizes.set({L: 1, R: 2})
             endPoint.x = 600;
@@ -101,6 +106,31 @@
         height: 100vh;
     }
 
+    .icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .icon {
+        margin: 0 10px;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+    }
+
+    .icon > svg {
+        margin: 1rem;
+    }
+
+    .settings {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
 
 </style>
 <div class="main">
@@ -115,4 +145,14 @@
         <circle cx="0" cy="200" r={5*$endSizes.L} fill="black" />
         <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
     </svg>
+    <div class="settings">
+        <div class="icons">
+            <div class="icon" on:click={_ => lines = []}>
+                <MdDelete/>
+            </div>
+        </div>
+        <div class=submit>
+            <input type="text" bind:value={name} placeholder="Sign your work" />
+        </div>
+    </div>
 </div>
