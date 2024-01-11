@@ -1,9 +1,13 @@
+
+
 <script>
     import { spring } from 'svelte/motion';
     let lines = [];
     let drawing = false;
     let startPoint = {};
     let rect;
+
+    let completed = false;
 
     const segment_length = 5;
 
@@ -25,13 +29,13 @@
 
 
     function startDrawing(event) {
-        rect = document.getElementById("svg").getBoundingClientRect();
         drawing = true;
         startPoint.x = event.clientX - rect.left;
         startPoint.y = event.clientY - rect.top;
     }
-
+    
     function drawLine(event) {
+        rect = document.getElementById("svg").getBoundingClientRect();
         const endPoint = {
             x: event.clientX - rect.left,
             y: event.clientY - rect.top,
@@ -42,10 +46,12 @@
             endSizes.set({L: 2, R: 1})
             endPoint.x = 0;
             endPoint.y = 200;
+            startPoint = endPoint;
         } else if (Math.abs(endPoint.x - 600) < 20 && Math.abs(endPoint.y - 200) < 20) {
             endSizes.set({L: 1, R: 2})
             endPoint.x = 600;
             endPoint.y = 200;
+            startPoint = endPoint;
         } else {
             endSizes.set({L: 1, R: 1})
         }
@@ -61,8 +67,13 @@
             lines = [...lines, { x1: startPoint.x, y1: startPoint.y, x2: endPoint.x, y2: endPoint.y }];
             // console.log(`drew line, ${startPoint.x}, ${startPoint.y}}, ${endPoint.x}, ${endPoint.y}`);
             startPoint = endPoint;
-        } else {
-            // console.log("didn't draw line");
+        }
+
+        // check if array starts at left and ends at right
+        if (lines.length > 0) {
+            if (lines[0].x1 == 0 && lines[0].y1 == 200 && lines[lines.length - 1].x2 == 600 && lines[lines.length - 1].y2 == 200) {
+                completed = true;
+            }
         }
 
 
@@ -79,15 +90,29 @@
     svg {
         /* border: 1px solid #ccc; */
         cursor: crosshair;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
-</style>
 
-<svg width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
-    {#each lines as line}
-        <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="black" stroke-width="4" stroke-linecap="round" />
-    {/each}
-    <!--Circles at each horizontal end of the box, in the middle vertically-->
-    <circle cx="0" cy="200" r={5*$endSizes.L} fill="black" />
-    <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
-</svg>
+    .main {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+    }
+
+
+</style>
+<div class="main">
+    <h1>Draw your Line Art below</h1>
+    <h3 style="opacity: 0.7;">Start your line on the left dot and end on the right dot</h3>
+
+    <svg width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
+        {#each lines as line}
+            <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="black" stroke-width="4" stroke-linecap="round" />
+        {/each}
+        <!--Circles at each horizontal end of the box, in the middle vertically-->
+        <circle cx="0" cy="200" r={5*$endSizes.L} fill="black" />
+        <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
+    </svg>
+</div>
