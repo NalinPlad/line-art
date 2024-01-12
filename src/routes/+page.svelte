@@ -47,7 +47,7 @@
 
         // if close enough to either end circle, make it smaller, and snap to it
         if (Math.abs(endPoint.x) < 20 && Math.abs(endPoint.y - 200) < 20) {
-            endSizes.set({L: 2, R: 1})
+            endSizes.set({L: 2, R: 1});
             endPoint.x = 0;
             endPoint.y = 200;
             startPoint = endPoint;
