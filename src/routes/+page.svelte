@@ -3,6 +3,7 @@
 <script>
     import { spring } from 'svelte/motion';
     import MdDelete from 'svelte-icons/md/MdDelete.svelte'
+    import MdUndo from 'svelte-icons/md/MdUndo.svelte'
 
     let lines = [];
     let drawing = false;
@@ -33,9 +34,28 @@
 
 
     function startDrawing(event) {
-        drawing = true;
-        startPoint.x = event.clientX - rect.left;
-        startPoint.y = event.clientY - rect.top;
+        const clickX = event.clientX - rect.left;
+        const clickY = event.clientY - rect.top;
+
+        // check if a line has been started, if it has, then you must restart your drawing from where you left off
+        if(!lines.length == 0) {
+            console.log("trying to restart");
+
+            const lastPoint = lines.at(-1);
+            console.log(lastPoint, clickX, clickY)
+            if(Math.abs(lastPoint.x2 - clickX) < 20 && Math.abs(lastPoint.y2 - clickY) < 20) {
+                drawing = true;
+                startPoint.x = lastPoint.x2
+                startPoint.y = lastPoint.y2
+                console.log("success")
+            } else {
+                console.log("failed")
+            }
+        } else {
+            drawing = true;
+            startPoint.x = clickX
+            startPoint.y = clickY
+        }
     }
     
     function drawLine(event) {
@@ -83,54 +103,11 @@
     }
 </script>
 
-<style>
-    /* svg {
-        cursor: crosshair;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .main {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        height: 100vh;
-    }
-
-    .icons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-    .icon {
-        margin: 0 10px;
-        cursor: pointer;
-        width: 30px;
-        height: 30px;
-    }
-
-    .icon > svg {
-        margin: 1rem;
-    }
-
-    .settings {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    } */
-
-
-</style>
 <div class="flex flex-col justify-center align-middle text-center">
-    <h1 class="text-4xl">Draw your Line Art below</h1>
+    <h1 class="text-4xl mt-10">Draw your Line Art below</h1>
     <h3 class="mb-32 opacity-25">Start your line on the left dot and end on the right dot</h3>
 
-    <div>
-
-        
+    <div class="flex justify-center">
         <svg class="shadow-lg" width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
             {#each lines as line}
             <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="black" stroke-width="4" stroke-linecap="round" />
@@ -139,11 +116,12 @@
             <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
         </svg>
     </div>
-        <div class="settings">
-            <div class="icons">
-            <div class="icon" on:click={_ => lines = []}>
-                <MdDelete/>
-            </div>
+    <div class="flex justify-center gap-4 mt-6">
+        <div class="w-6" on:click={_ => {lines.pop(); lines = lines;}}>
+            <MdUndo/>
+        </div>
+        <div class="w-6" on:click={_ => lines = []}>
+            <MdDelete/>
         </div>
     </div>
 </div>
