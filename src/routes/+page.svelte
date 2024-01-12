@@ -64,13 +64,10 @@
 
 
         if (!drawing) return;
-        // console.log(`Endpoint: ${endPoint.x},${endPoint.y}, cXY: ${event.clientX}, ${event.clientY}, rect: ${rect.left}, ${rect.top}`);
 
         // if more than 5 pixels away from the last point
         if (Math.abs(endPoint.x - startPoint.x) > segment_length || Math.abs(endPoint.y - startPoint.y) > segment_length) {
-
             lines = [...lines, { x1: startPoint.x, y1: startPoint.y, x2: endPoint.x, y2: endPoint.y }];
-            // console.log(`drew line, ${startPoint.x}, ${startPoint.y}}, ${endPoint.x}, ${endPoint.y}`);
             startPoint = endPoint;
         }
 
@@ -80,10 +77,6 @@
                 completed = true;
             }
         }
-
-
-
-        //   lines = [...lines, { x1: startPoint.x, y1: startPoint.y, x2: endPoint.x, y2: endPoint.y }];
     }
 
     function stopDrawing() {
@@ -92,8 +85,7 @@
 </script>
 
 <style>
-    svg {
-        /* border: 1px solid #ccc; */
+    /* svg {
         cursor: crosshair;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
@@ -129,30 +121,30 @@
         justify-content: center;
         align-items: center;
         margin-top: 20px;
-    }
+    } */
 
 
 </style>
-<div class="main">
-    <h1>Draw your Line Art below</h1>
-    <h3 style="opacity: 0.7;">Start your line on the left dot and end on the right dot</h3>
+<div class="flex flex-col justify-center align-middle text-center">
+    <h1 class="text-4xl">Draw your Line Art below</h1>
+    <h3 class="mb-32 opacity-25">Start your line on the left dot and end on the right dot</h3>
 
-    <svg width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
-        {#each lines as line}
+    <div>
+
+        
+        <svg class="shadow-lg" width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
+            {#each lines as line}
             <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="black" stroke-width="4" stroke-linecap="round" />
-        {/each}
-        <!--Circles at each horizontal end of the box, in the middle vertically-->
-        <circle cx="0" cy="200" r={5*$endSizes.L} fill="black" />
-        <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
-    </svg>
-    <div class="settings">
-        <div class="icons">
+            {/each}
+            <circle cx="0" cy="200" r={5*$endSizes.L} fill="black" />
+            <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
+        </svg>
+    </div>
+        <div class="settings">
+            <div class="icons">
             <div class="icon" on:click={_ => lines = []}>
                 <MdDelete/>
             </div>
-        </div>
-        <div class=submit>
-            <input type="text" bind:value={name} placeholder="Sign your work" />
         </div>
     </div>
 </div>
