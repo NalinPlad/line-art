@@ -50,7 +50,6 @@
             endSizes.set({L: 2, R: 1})
             endPoint.x = 0;
             endPoint.y = 200;
-            // if(!drawing) startPoint = endPoint;
             startPoint = endPoint;
         } else if (Math.abs(endPoint.x - 600) < 20 && Math.abs(endPoint.y - 200) < 20) {
             endSizes.set({L: 1, R: 2})
