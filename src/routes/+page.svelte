@@ -4,11 +4,14 @@
     import { spring } from 'svelte/motion';
     import MdDelete from 'svelte-icons/md/MdDelete.svelte'
     import MdUndo from 'svelte-icons/md/MdUndo.svelte'
+    import MdGridOn from 'svelte-icons/md/MdGridOn.svelte'
 
     let lines = [];
     let drawing = false;
     let startPoint = {};
     let rect;
+
+    let grid = false;
 
     let name = "";
 
@@ -101,6 +104,19 @@
     function stopDrawing() {
         drawing = false;
     }
+
+    function undo() {
+        lines.pop();
+        lines = lines;
+    }
+
+    function clear() {
+        lines = [];
+    }
+
+    function toggleGrid() {
+        grid = !grid;
+    }
 </script>
 
 <div class="flex flex-col justify-center align-middle text-center">
@@ -108,20 +124,37 @@
     <h3 class="mb-32 opacity-25">Start your line on the left dot and end on the right dot</h3>
 
     <div class="flex justify-center">
-        <svg class="shadow-lg" width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
+        <svg class="shadow-lg border-slate-400" width="600" height="400" on:mousedown={startDrawing} on:mousemove={drawLine} on:mouseup={stopDrawing} on:mouseleave={stopDrawing} id="svg">
+            
             {#each lines as line}
-            <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="black" stroke-width="4" stroke-linecap="round" />
+                <line x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2} stroke="black" stroke-width="4" stroke-linecap="round" />
             {/each}
+
             <circle cx="0" cy="200" r={5*$endSizes.L} fill="black" />
             <circle cx="600" cy="200" r={5*$endSizes.R} fill="black" />
+
+            <!--Generate dot background -->
+            {#if grid}
+                {#each Array(20) as _, i}
+                    {#each Array(20) as _, j}
+                        <!-- the circles opacity decreases proportional to their distance from the center -->
+                        <circle cx={i*30} cy={j*30} r="2" fill="black" opacity={0.2 - Math.sqrt((i*30 - 300)**2 + (j*30 - 200)**2)/3000} />
+
+                    {/each}
+                {/each}
+            {/if}
         </svg>
     </div>
     <div class="flex justify-center gap-4 mt-6">
-        <div class="w-6" on:click={_ => {lines.pop(); lines = lines;}}>
+        <!-- Todo wrap this in button component with slot for icons-->
+        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all"  on:click={undo}>
             <MdUndo/>
         </div>
-        <div class="w-6" on:click={_ => lines = []}>
+        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all" on:click={clear}>
             <MdDelete/>
+        </div>
+        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all" on:click={toggleGrid}>
+            <MdGridOn/>
         </div>
     </div>
 </div>
