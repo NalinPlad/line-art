@@ -81,10 +81,10 @@ async fn submit(req_body: web::Json<DrawingData>) -> impl Responder {
     let drawing_data = DrawingData { data, name };
     let line_data = drawing_data.get_line_data();
     if !line_data.validate_line() {
-        return HttpResponse::BadRequest().body("Invalid line data!");
+        return HttpResponse::BadRequest().json("Invalid line data!");
     }
 
-    HttpResponse::Ok().body("Submitted drawing data!")
+    HttpResponse::Ok().json("Success!")
 }
 
 

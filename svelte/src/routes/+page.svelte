@@ -46,11 +46,10 @@
                 name: name,
             }),
         })
-            .then(res => res.body.getReader().read())
+            // .then(res => res.json())
             .then(res => {
-                if (res.success) {
+                if (res.status == 200) {
                     alert('Thanks for submitting!');
-                    lines = [];
                 } else {
                     alert('Something went wrong :(');
                 }
@@ -65,7 +64,7 @@
 
         // check if a line has been started, if it has, then you must restart your drawing from where you left off
         if(!lines.length == 0) {
-            console.log("trying to restart");
+            // console.log("trying to restart");
 
             const lastPoint = lines.at(-1);
             console.log(lastPoint, clickX, clickY)
