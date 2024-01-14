@@ -14,7 +14,7 @@
 
     let grid = false;
 
-    let name = "";
+    let artist = "";
 
     let completed = false;
 
@@ -43,7 +43,7 @@
             },
             body: JSON.stringify({
                 data: serialized_drawing,
-                name: name,
+                artist: artist,
             }),
         })
             // .then(res => res.json())
