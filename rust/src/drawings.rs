@@ -1,4 +1,4 @@
-use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
+use actix_web::{post, web, HttpResponse, Responder};
 use crate::models::*;
 
 #[post("/echo")]
