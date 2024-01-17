@@ -168,17 +168,22 @@
         </svg>
     </div>
     <div class="flex justify-center gap-4 mt-6">
-            <IconButton on:click={undo}>
-                <MdUndo/>
-            </IconButton>
-            <IconButton on:click={clear}>
-                <MdDelete/>
-            </IconButton>
-            <IconButton on:click={toggleGrid}>
-                <MdGridOn/>
-            </IconButton>
-            <IconButton on:click={_ => submit(serialize(lines))}>
-                <MdDone/>
-            </IconButton>
+
+        <IconButton on:click={undo}>
+            <MdUndo/>
+        </IconButton>
+
+        <IconButton on:click={clear}>
+            <MdDelete/>
+        </IconButton>
+
+        <IconButton on:click={toggleGrid}>
+            <MdGridOn/>
+        </IconButton>
+
+        <IconButton on:click={_ => submit(serialize(lines))}>
+            <MdDone/>
+        </IconButton>
+        
     </div>
 </div>
