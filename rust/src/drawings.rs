@@ -1,5 +1,5 @@
-use actix_web::{post, web, HttpResponse, Responder};
 use crate::models::*;
+use actix_web::{post, web, HttpResponse, Responder};
 
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
@@ -7,7 +7,7 @@ async fn echo(req_body: String) -> impl Responder {
 }
 
 #[post("/submit")]
-async fn submit(req_body: web::Json<DrawingRequest>) -> impl Responder {
+async fn submit(req_body: web::Json<DrawingPayload>) -> impl Responder {
     let line_data = LineData::from_drawing_request(req_body.into_inner());
 
     if !line_data.validate_line() {
