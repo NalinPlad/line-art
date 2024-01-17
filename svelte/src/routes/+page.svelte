@@ -6,6 +6,7 @@
     import MdUndo from 'svelte-icons/md/MdUndo.svelte'
     import MdGridOn from 'svelte-icons/md/MdGridOn.svelte'
     import MdDone from 'svelte-icons/md/MdDone.svelte'
+    import IconButton from '../components/IconButton.svelte'
 
     let lines = [];
     let drawing = false;
@@ -167,18 +168,17 @@
         </svg>
     </div>
     <div class="flex justify-center gap-4 mt-6">
-        <!-- Todo wrap this in button component with slot for icons-->
-        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all"  on:click={undo}>
-            <MdUndo/>
-        </div>
-        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all" on:click={clear}>
-            <MdDelete/>
-        </div>
-        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all" on:click={toggleGrid}>
-            <MdGridOn/>
-        </div>
-        <div class="w-6 hover:scale-90 hover:rotate-1 hover:opacity-80 active:scale-110 active:opacity-100 transition-all" on:click={_ => submit(serialize(lines))}>
-            <MdDone/>
-        </div>
+            <IconButton on:click={undo}>
+                <MdUndo/>
+            </IconButton>
+            <IconButton on:click={clear}>
+                <MdDelete/>
+            </IconButton>
+            <IconButton on:click={toggleGrid}>
+                <MdGridOn/>
+            </IconButton>
+            <IconButton on:click={_ => submit(serialize(lines))}>
+                <MdDone/>
+            </IconButton>
     </div>
 </div>
