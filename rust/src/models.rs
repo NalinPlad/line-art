@@ -27,37 +27,11 @@ pub struct NewDrawing<'a> {
     pub created_at: NaiveDateTime,
 } 
 
-impl NewDrawing<'_> {
-    
-}
-
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct DrawingPayload {
-    data: String,
-    artist: String,
+    pub data: String,
+    pub artist: String,
 }
-
-// impl DrawingRequest {
-// fn to_drawing_data(&self) -> DrawingData {
-//     let id = 0;
-//     let data = self.data.clone();
-//     let artist = self.artist.clone();
-//     let created_at = chrono::Local::now().naive_local();
-//     DrawingData {
-//         id,
-//         data,
-//         artist,
-//         created_at,
-//     }
-// }
-// }
-
-// struct DrawingData {
-//     id: u32,
-//     data: String,
-//     artist: String,
-//     created_at: NaiveDateTime,
-// }
 
 pub struct LineData {
     lines: Vec<Line>,

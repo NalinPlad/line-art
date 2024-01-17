@@ -33,6 +33,8 @@ pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
 
+    dotenvy::dotenv().ok();
+
     env_logger::init_from_env(Env::default().default_filter_or("info"));
 
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL");

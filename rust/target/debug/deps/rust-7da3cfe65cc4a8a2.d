@@ -1,5 +1,0 @@
-/Users/ajitharaiza-singh/Dropbox/My Mac (Ajiths-Air.attlocal.net)/Downloads/coding/line-art/rust/target/debug/deps/rust-7da3cfe65cc4a8a2: src/main.rs
-
-/Users/ajitharaiza-singh/Dropbox/My Mac (Ajiths-Air.attlocal.net)/Downloads/coding/line-art/rust/target/debug/deps/rust-7da3cfe65cc4a8a2.d: src/main.rs
-
-src/main.rs:
