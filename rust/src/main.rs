@@ -1,12 +1,16 @@
+use env_logger::Env;
 use std::string;
 
 use actix_cors::Cors;
-use actix_web::{get, post, web, App, Error, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, Error, HttpResponse, HttpServer, Responder, middleware::Logger};
 // use die
 
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
+mod drawings;
+mod models;
+mod schema;
 // #[get("/")]
 // async fn hello() -> impl Responder {
 //     HttpResponse::Ok().body("Hello world!")
@@ -18,25 +22,13 @@ use serde::{Deserialize, Serialize};
 
 
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
 
-#[post("/submit")]
-async fn submit(req_body: web::Json<DrawingRequest>) -> impl Responder {
-
-    let drawing_data = req_body;
-    let line_data = drawing_data.get_line_data();
-    if !line_data.validate_line() {
-        return HttpResponse::BadRequest().json("Invalid line data!");
-    }
-
-    HttpResponse::Ok().json("Success!")
-}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+
+    env_logger::init_from_env(Env::default().default_filter_or("info"));
+    
     HttpServer::new(|| {
         let cors = Cors::default()
             .allow_any_origin()
@@ -45,10 +37,9 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .wrap(cors)
-            .service(submit)
-            // .service(hello)
-            .service(echo)
-        // .route("/hey", web::get().to(manual_hello))
+            .wrap(Logger::default())
+            .service(drawings::submit)
+            .service(drawings::echo)
     })
     .bind(("127.0.0.1", 8080))?
     .run()

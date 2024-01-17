@@ -2,6 +2,9 @@ use chrono::NaiveDateTime;
 use diesel::{prelude::*, sql_types::Timestamp};
 use serde::{Deserialize, Serialize};
 
+// use crate::sc
+
+
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::drawings)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -12,9 +15,27 @@ pub struct Drawing {
     pub created_at: NaiveDateTime,
 }
 
+impl Drawing {
+    pub fn get_line_data(&self) -> LineData {
+        let lines: Vec<Line> = Vec::new();
+        let mut line_data = LineData { lines };
+        let lines = self.lines.split(";");
+        for line in lines {
+            let mut coords = line.split(",");
+            let x1 = coords.next().unwrap().parse::<f32>().unwrap();
+            let y1 = coords.next().unwrap().parse::<f32>().unwrap();
+            let x2 = coords.next().unwrap().parse::<f32>().unwrap();
+            let y2 = coords.next().unwrap().parse::<f32>().unwrap();
+            let line = Line { x1, y1, x2, y2 };
+            line_data.lines.push(line);
+        }
+        line_data
+    }
+    
+}
 
 #[derive(Deserialize, Serialize)]
-struct DrawingRequest {
+pub struct DrawingRequest {
     data: String,
     artist: String,
 }
@@ -41,30 +62,13 @@ struct DrawingRequest {
 //     created_at: NaiveDateTime,
 // }
 
-impl Drawing {
-    fn get_line_data(&self) -> LineData {
-        let lines: Vec<Line> = Vec::new();
-        let mut line_data = LineData { lines };
-        let lines = self.lines.split(";");
-        for line in lines {
-            let mut coords = line.split(",");
-            let x1 = coords.next().unwrap().parse::<f32>().unwrap();
-            let y1 = coords.next().unwrap().parse::<f32>().unwrap();
-            let x2 = coords.next().unwrap().parse::<f32>().unwrap();
-            let y2 = coords.next().unwrap().parse::<f32>().unwrap();
-            let line = Line { x1, y1, x2, y2 };
-            line_data.lines.push(line);
-        }
-        line_data
-    }
-}
-struct LineData {
+pub struct LineData {
     lines: Vec<Line>,
 }
 
 impl LineData {
     /// Validates that each line segment in fact connects to one another sequentilly, beginning at 0,200 and ending at 600,200
-    fn validate_line(&self) -> bool {
+    pub fn validate_line(&self) -> bool {
         let mut prev_x = 0.0;
         let mut prev_y = 200.0;
         for line in &self.lines {
@@ -79,9 +83,25 @@ impl LineData {
         }
         true
     }
+
+    pub fn from_drawing_request(req: DrawingRequest) -> LineData {
+        let lines: Vec<Line> = Vec::new();
+        let mut line_data = LineData { lines };
+        let lines = req.data.split(";");
+        for line in lines {
+            let mut coords = line.split(",");
+            let x1 = coords.next().unwrap().parse::<f32>().unwrap();
+            let y1 = coords.next().unwrap().parse::<f32>().unwrap();
+            let x2 = coords.next().unwrap().parse::<f32>().unwrap();
+            let y2 = coords.next().unwrap().parse::<f32>().unwrap();
+            let line = Line { x1, y1, x2, y2 };
+            line_data.lines.push(line);
+        }
+        line_data
+    }
 }
 
-struct Line {
+pub struct Line {
     x1: f32,
     y1: f32,
     x2: f32,

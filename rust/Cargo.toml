@@ -9,6 +9,7 @@ edition = "2021"
 actix-cors = "0.7.0"
 actix-web = "4.4.1"
 chrono = "0.4.31"
-diesel = {version = "2.1.4", features = ["postgres", "chrono"]}
+diesel = {version = "2.1.4", features = ["postgres", "chrono", "r2d2"]}
 dotenvy = "0.15.7"
+env_logger = "0.10.1"
 serde = {version = "1.0.195", features = ["derive"]}
