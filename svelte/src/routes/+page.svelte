@@ -186,7 +186,7 @@
             </IconButton> -->
         </div>
 
-        <div class={lines}>
+        <div>
             <input type="text" bind:value={artist} placeholder="Your Name" class="mt-6 p-2 border-2 border-black rounded-md"/>
             <input type="button" value="Submit" on:click={_ => submit(serialize(lines))} class="mt-6 p-2 border-2 border-black rounded-md"/>
         </div>
