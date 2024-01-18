@@ -167,23 +167,30 @@
             {/if}
         </svg>
     </div>
-    <div class="flex justify-center gap-4 mt-6">
+    <div class="flex justify-center flex-col">
+        <div class="flex justify-center gap-4 mt-6">
+            <IconButton on:click={undo}>
+                <MdUndo/>
+            </IconButton>
 
-        <IconButton on:click={undo}>
-            <MdUndo/>
-        </IconButton>
+            <IconButton on:click={clear}>
+                <MdDelete/>
+            </IconButton>
 
-        <IconButton on:click={clear}>
-            <MdDelete/>
-        </IconButton>
+            <IconButton on:click={toggleGrid}>
+                <MdGridOn/>
+            </IconButton>
 
-        <IconButton on:click={toggleGrid}>
-            <MdGridOn/>
-        </IconButton>
+            <!-- <IconButton on:click={_ => submit(serialize(lines))}>
+                <MdDone/>
+            </IconButton> -->
+        </div>
 
-        <IconButton on:click={_ => submit(serialize(lines))}>
-            <MdDone/>
-        </IconButton>
-        
+        <div class={lines}>
+            <input type="text" bind:value={artist} placeholder="Your Name" class="mt-6 p-2 border-2 border-black rounded-md"/>
+            <input type="button" value="Submit" on:click={_ => submit(serialize(lines))} class="mt-6 p-2 border-2 border-black rounded-md"/>
+        </div>
+
+
     </div>
 </div>
