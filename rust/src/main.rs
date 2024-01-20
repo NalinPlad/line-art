@@ -54,6 +54,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(cors)
             .wrap(Logger::default())
             .service(drawings::submit)
+            .service(drawings::get_drawings)
             .service(drawings::echo)
     })
     .bind(("127.0.0.1", 8080))?

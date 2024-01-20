@@ -3,9 +3,7 @@ use diesel::{prelude::*, sql_types::Timestamp, Insertable};
 use serde::{Deserialize, Serialize};
 use crate::schema::drawings;
 
-// use crate::sc
-
-#[derive(Queryable, Selectable)]
+#[derive(Queryable, Selectable, Serialize)]
 #[diesel(table_name = drawings)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Drawing {

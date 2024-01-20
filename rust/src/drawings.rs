@@ -1,10 +1,21 @@
 use crate::{models::*, DbPool, schema::drawings};
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{post, get, web, HttpResponse, Responder};
 use diesel::RunQueryDsl;
 
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
+}
+
+#[get("/drawings")]
+async fn get_drawings(pool: web::Data<DbPool>) -> impl Responder {
+    use crate::schema::drawings::dsl::*;
+    let mut conn = pool.get().expect("couldn't get db connection from pool");
+    let results = drawings
+        .load::<Drawing>(&mut conn)
+        .expect("Error loading drawings");
+
+    HttpResponse::Ok().json(results)
 }
 
 #[post("/submit")]
