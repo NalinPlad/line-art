@@ -145,7 +145,7 @@
 
 <div class="flex flex-col justify-center align-middle text-center">
     <h1 class="text-4xl mt-10">Line Art</h1>
-    <h4>The technique of creating a piece of art while only using a single continuous line</h4>
+    <h4 class="italic">The technique of creating a piece of art while only using a single continuous line</h4>
     <LineViewer />
     <h1 class="text-4xl mt-10">Draw your Line Art below</h1>
     <h3 class="mb-32 opacity-25">Start your line on the left dot and end on the right dot</h3>
